@@ -1,17 +1,7 @@
-#include "raylib.hpp"
 #include <raylib.h>
 
-#define WIN_FLAGS FLAG_WINDOW_RESIZABLE
-#define WIN_W 1280
-#define WIN_H 720
-#define WIN_TITLE "Space Shooter"
-#define WIN_FPS 60
-#define EXIT_KEY KEY_NULL
-#define WIN_MIN_W 640
-#define WIN_MIN_H 480
-#define WIN_MAX_W 3840
-#define WIN_MAX_H 2160
-#define DEBUG true
+#include "config.hpp"
+#include "raylib.hpp"
 
 Raylib::Raylib() {
   SetConfigFlags(WIN_FLAGS);

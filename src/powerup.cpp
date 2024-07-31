@@ -1,12 +1,9 @@
 #include <raylib.h>
 
+#include "config.hpp"
 #include "powerup.hpp"
 #include "powerup_type.hpp"
 #include "util.hpp"
-
-#define POWERUP_SPEED_RATIO 3
-#define POWERUP_SIZE_RATIO 10
-#define POWERUP_COLOR PURPLE
 
 Powerup::Powerup(PowerupType type) {
   Resize(GetWindowSize(), GetWindowSize());

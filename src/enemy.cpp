@@ -1,11 +1,8 @@
 #include <raylib.h>
 
+#include "config.hpp"
 #include "enemy.hpp"
 #include "util.hpp"
-
-#define ENEMY_COLOR GRAY
-#define ENEMY_SIZE_RATIO 10
-#define ENEMY_SPEED_RATIO 3
 
 Enemy::Enemy() {
   Resize(GetWindowSize(), GetWindowSize());

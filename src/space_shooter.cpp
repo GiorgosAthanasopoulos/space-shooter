@@ -1,26 +1,10 @@
 #include <raylib.h>
 #include <sstream>
 
+#include "config.hpp"
 #include "powerup_type.hpp"
 #include "space_shooter.hpp"
 #include "util.hpp"
-
-#define WIN_BG BLACK
-#define KEY_RESTART KEY_SPACE
-#define SCORE_TEXT_PADDING 5
-#define SCORE_TEXT_COLOR WHITE
-#define SCORE_INTERVAL_OOB 10
-#define SCORE_INTERVAL_KILL 20
-#define KEY_SHOOT KEY_SPACE
-#define FONT_SIZE 100
-#define LARGE_FONT_SIZE 1000
-
-#define POWERUP_SPAWN_TIMER 10.0f
-#define POWERUP_ACTIVE_TIMER POWERUP_SPAWN_TIMER * 3 / 4
-#define ENEMY_SPAWN_TIMER 2.0f
-#define BULLET_SPAWN_TIMER 0.5f
-#define SHIELD_COLOR RAYWHITE
-#define POWERUP_INFO_DRAW_COLOR RED
 
 SpaceShooter::SpaceShooter() {
   winSize = GetWindowSize();
@@ -259,19 +243,20 @@ void SpaceShooter::DrawPowerups() {
   if (shield) {
     Rectangle playerRec = player.GetRec();
     DrawCircle(playerRec.x + playerRec.width / 2,
-               playerRec.y + playerRec.height / 2, 2 * playerRec.width,
+               playerRec.y + playerRec.height / 2, playerRec.width,
                SHIELD_COLOR);
   }
-  // FIX: from this point on smth blocks the thread...
-  const char *tripleShotText = "TRIPLE SHOT ACTIVE";
-  Vector2 tripleShotTextSize =
-      AssertTextFitsInViewport(tripleShotText, FONT_SIZE, winSize / 6);
 
-  const char *shieldText = "SHIELD ACTIVE";
+  const char *tripleShotText = "Triple Shot Active";
+  Vector2 tripleShotTextSize =
+      AssertTextFitsInViewport(tripleShotText, FONT_SIZE, winSize / 5);
+
+  const char *shieldText = "Shield Active";
   float shieldTextSizeY = MeasureText(shieldText, tripleShotTextSize.y);
 
   if (shield) {
-    DrawText(shieldText, SCORE_TEXT_PADDING, winSize.y - SCORE_TEXT_PADDING,
+    DrawText(shieldText, SCORE_TEXT_PADDING,
+             winSize.y - shieldTextSizeY - SCORE_TEXT_PADDING,
              tripleShotTextSize.y, POWERUP_INFO_DRAW_COLOR);
   }
   if (tripleShot) {

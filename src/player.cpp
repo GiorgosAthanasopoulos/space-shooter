@@ -1,13 +1,8 @@
 #include <raylib.h>
 
+#include "config.hpp"
 #include "player.hpp"
 #include "util.hpp"
-
-#define PLAYER_COLOR RED
-#define PLAYER_SIZE_RATIO 10
-#define KEY_MOVE_RIGHT KEY_D
-#define KEY_MOVE_LEFT KEY_A
-#define PLAYER_SPEED_RATIO 2
 
 Player::Player() {
   Resize(GetWindowSize(), GetWindowSize());

@@ -2,11 +2,8 @@
 #include <raylib.h>
 
 #include "bullet.hpp"
+#include "config.hpp"
 #include "util.hpp"
-
-#define BULLET_COLOR ORANGE
-#define BULLET_SIZE_RATIO 10
-#define BULLET_SPEED_RATIO 3
 
 Bullet::Bullet(Vector2 pos, float angle) {
   this->pos = pos;

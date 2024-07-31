@@ -7,6 +7,8 @@
 #include "util.hpp"
 
 // FIX: bullet hitbox when angled
+// TODO: audio
+// TODO: explosion
 
 SpaceShooter::SpaceShooter() {
   winSize = GetWindowSize();
@@ -29,10 +31,10 @@ void SpaceShooter::Update() {
   HandleEnemyUpdate();
   HandleBulletUpdate();
   HandlePowerupUpdate();
+  HandleExplosionUpdate();
 }
 
 void SpaceShooter::Draw() {
-  BeginDrawing();
   ClearBackground(WIN_BG);
   DrawTexturePro(am.bg, {0, 0, (float)am.bg.width, (float)am.bg.height},
                  {0, 0, winSize.x, winSize.y}, {0, 0}, 0, WHITE);
@@ -47,8 +49,6 @@ void SpaceShooter::Draw() {
 
   DrawPowerups();
   DrawEntities();
-
-  EndDrawing();
 }
 
 void SpaceShooter::Resize(Vector2 old, Vector2 nnew) {
@@ -82,6 +82,8 @@ void SpaceShooter::Restart() {
   powerups.clear();
   powerupSpawnTimer =
       GetRandomValue(POWERUP_SPAWN_TIMER_MIN, POWERUP_SPAWN_TIMER_MAX);
+
+  explosions.clear();
 
   shield = false;
   shieldTimer = 0;
@@ -147,6 +149,8 @@ void SpaceShooter::HandleBulletUpdate() {
         bullets.erase(bullets.begin() + i);
         enemies.erase(enemies.begin() + j);
         score += SCORE_INTERVAL_KILL;
+        Rectangle collRec = GetCollisionRec(bulletRec, enemyRec);
+        explosions.push_back(Explosion({collRec.x, collRec.y}));
       }
     }
   }
@@ -285,5 +289,18 @@ void SpaceShooter::DrawEntities() {
   for (size_t i = 0; i < powerups.size(); ++i) {
     PowerupType type = powerups[i].GetType();
     powerups[i].Draw(type == SHIELD ? am.shield : am.powerupIcon);
+  }
+  for (size_t i = 0; i < explosions.size(); ++i) {
+    explosions[i].Draw(am.explosion);
+  }
+}
+
+void SpaceShooter::HandleExplosionUpdate() {
+  for (size_t i = 0; i < explosions.size(); ++i) {
+    explosions[i].Update();
+
+    if (explosions[i].GetLifetime() <= 0.0f) {
+      explosions.erase(explosions.begin() + i);
+    }
   }
 }

@@ -6,6 +6,7 @@
 #include "asset_manager.hpp"
 #include "bullet.hpp"
 #include "enemy.hpp"
+#include "explosion.hpp"
 #include "player.hpp"
 #include "powerup.hpp"
 
@@ -39,6 +40,8 @@ private:
 
   AssetManager am;
 
+  std::vector<Explosion> explosions;
+
   void Resize(Vector2 old, Vector2 nnew);
   void Restart();
 
@@ -47,6 +50,7 @@ private:
   void HandleEnemyUpdate();
   void HandleBulletUpdate();
   void HandlePowerupUpdate();
+  void HandleExplosionUpdate();
 
   void DrawScores();
   void DrawLoss();

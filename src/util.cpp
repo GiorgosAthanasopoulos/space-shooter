@@ -14,6 +14,16 @@ void operator+=(Vector2 &a, Vector2 b) {
   a.x += b.x;
   a.y += b.y;
 }
+void operator+=(Vector2 &a, float b) {
+  a.x += b;
+  a.y += b;
+}
+void operator-=(Vector2 &a, float b) {
+  a.x -= b;
+  a.y -= b;
+}
+bool operator>(Vector2 a, Vector2 b) { return a.x > b.x || a.y > b.y; }
+bool operator<(Vector2 a, float b) { return a.x < b || a.y < b; }
 
 Vector2 MaintainPosAfterResize(Vector2 old, Vector2 nnew, Vector2 pos) {
   return pos / old * nnew;

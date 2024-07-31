@@ -1,5 +1,6 @@
 #include "raylib.hpp"
 #include "space_shooter.hpp"
+#include <raylib.h>
 
 int main() {
   Raylib *raylib = new Raylib;
@@ -9,8 +10,10 @@ int main() {
     game->Update();
     raylib->Update();
 
+    BeginDrawing();
     game->Draw();
     raylib->Draw();
+    EndDrawing();
   }
 
   delete game;

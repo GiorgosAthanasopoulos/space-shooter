@@ -11,6 +11,10 @@ Vector2 operator*(Vector2 a, Vector2 b);
 Vector2 operator/(Vector2 a, float b);
 Vector2 operator*(Vector2 a, float b);
 void operator+=(Vector2 &a, Vector2 b);
+void operator+=(Vector2 &a, float b);
+void operator-=(Vector2 &a, float b);
+bool operator>(Vector2 a, Vector2 b);
+bool operator<(Vector2 a, float b);
 
 Vector2 MaintainPosAfterResize(Vector2 old, Vector2 nnew, Vector2 pos);
 

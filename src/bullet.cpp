@@ -26,8 +26,8 @@ void Bullet::Update() {
 void Bullet::Draw() { DrawRectangleV(pos, size, BULLET_COLOR); }
 
 void Bullet::Resize(Vector2 old, Vector2 nnew) {
-  speed = nnew / BULLET_SPEED_RATIO;
-  size = nnew / BULLET_SIZE_RATIO;
+  speed = CalculateSpeed(BULLET_SPEED_RATIO);
+  size = CalculateSize(BULLET_SIZE_RATIO);
   pos = MaintainPosAfterResize(old, nnew, pos);
 }
 

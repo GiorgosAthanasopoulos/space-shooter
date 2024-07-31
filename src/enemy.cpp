@@ -24,8 +24,8 @@ void Enemy::Update() {
 void Enemy::Draw() { DrawRectangleV(pos, size, ENEMY_COLOR); }
 
 void Enemy::Resize(Vector2 old, Vector2 nnew) {
-  size = nnew / ENEMY_SIZE_RATIO;
-  speed = nnew / ENEMY_SPEED_RATIO;
+  speed = CalculateSpeed(ENEMY_SPEED_RATIO);
+  size = CalculateSize(ENEMY_SIZE_RATIO);
   pos = MaintainPosAfterResize(old, nnew, pos);
 }
 

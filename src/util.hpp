@@ -18,3 +18,6 @@ void WorldBoundaryCheckRec(Vector2 *pos, Vector2 size);
 
 Vector2 AssertTextFitsInViewport(const char *text, int fontSize,
                                  Vector2 maxSize);
+
+Vector2 CalculateSpeed(float speedToWinSizeRatio);
+Vector2 CalculateSize(float sizeToWinSizeRatio);

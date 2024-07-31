@@ -33,8 +33,8 @@ void Player::Update() {
 void Player::Draw() { DrawRectangleV(pos, size, PLAYER_COLOR); }
 
 void Player::Resize(Vector2 old, Vector2 nnew) {
-  size = nnew / PLAYER_SIZE_RATIO;
-  speed = nnew / PLAYER_SPEED_RATIO;
+  size = CalculateSize(PLAYER_SIZE_RATIO);
+  speed = CalculateSpeed(PLAYER_SPEED_RATIO);
   pos = MaintainPosAfterResize(old, nnew, pos);
 }
 

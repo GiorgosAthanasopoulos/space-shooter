@@ -46,3 +46,10 @@ Vector2 AssertTextFitsInViewport(const char *text, int fontSize,
 
   return {textW, (float)fontSize};
 }
+
+Vector2 CalculateSpeed(float speedToWinSizeRatio) {
+  return GetWindowSize() / speedToWinSizeRatio;
+}
+Vector2 CalculateSize(float sizeToWinSizeRatio) {
+  return GetWindowSize() / sizeToWinSizeRatio;
+}

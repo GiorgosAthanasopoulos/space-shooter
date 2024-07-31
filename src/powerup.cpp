@@ -19,7 +19,16 @@ void Powerup::Update() {
   pos += vel * GetFrameTime();
 }
 
-void Powerup::Draw() { DrawRectangleV(pos, size, POWERUP_COLOR); }
+void Powerup::Draw(Texture2D tex) {
+  // DrawRectangleV(pos, size, POWERUP_COLOR);
+  Rectangle powerupRec = {pos.x, pos.y, size.x, size.y};
+  DrawTexturePro(tex, {0, 0, (float)tex.width, (float)tex.height}, powerupRec,
+                 {0, 0}, 0, WHITE);
+  if (DEBUG) {
+    DrawRectangleLinesEx(powerupRec, DEBUG_COLL_LINE_THICK,
+                         DEBUG_COLL_LINE_COLOR);
+  }
+}
 
 void Powerup::Resize(Vector2 old, Vector2 nnew) {
   speed = CalculateSpeed(POWERUP_SPEED_RATIO);

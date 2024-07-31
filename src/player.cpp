@@ -25,7 +25,16 @@ void Player::Update() {
   WorldBoundaryCheckRec(&pos, size);
 }
 
-void Player::Draw() { DrawRectangleV(pos, size, PLAYER_COLOR); }
+void Player::Draw(Texture2D tex) {
+  // DrawRectangleV(pos, size, PLAYER_COLOR);
+  Rectangle playerRec = {pos.x, pos.y, size.x, size.y};
+  DrawTexturePro(tex, {0, 0, (float)tex.width, (float)tex.height}, playerRec,
+                 {0, 0}, 0, WHITE);
+  if (DEBUG) {
+    DrawRectangleLinesEx(playerRec, DEBUG_COLL_LINE_THICK,
+                         DEBUG_COLL_LINE_COLOR);
+  }
+}
 
 void Player::Resize(Vector2 old, Vector2 nnew) {
   size = CalculateSize(PLAYER_SIZE_RATIO);

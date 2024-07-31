@@ -3,6 +3,7 @@
 #include <raylib.h>
 #include <vector>
 
+#include "asset_manager.hpp"
 #include "bullet.hpp"
 #include "enemy.hpp"
 #include "player.hpp"
@@ -35,6 +36,8 @@ private:
 
   std::vector<Powerup> powerups;
   float powerupSpawnTimer;
+
+  AssetManager am;
 
   void Resize(Vector2 old, Vector2 nnew);
   void Restart();

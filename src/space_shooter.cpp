@@ -6,6 +6,8 @@
 #include "space_shooter.hpp"
 #include "util.hpp"
 
+// FIX: bullet hitbox when angled
+
 SpaceShooter::SpaceShooter() {
   winSize = GetWindowSize();
   bestScore = 0;
@@ -32,6 +34,8 @@ void SpaceShooter::Update() {
 void SpaceShooter::Draw() {
   BeginDrawing();
   ClearBackground(WIN_BG);
+  DrawTexturePro(am.bg, {0, 0, (float)am.bg.width, (float)am.bg.height},
+                 {0, 0, winSize.x, winSize.y}, {0, 0}, 0, WHITE);
 
   DrawScores();
 
@@ -76,7 +80,8 @@ void SpaceShooter::Restart() {
   bulletSpawnTimer = 0;
 
   powerups.clear();
-  powerupSpawnTimer = POWERUP_SPAWN_TIMER;
+  powerupSpawnTimer =
+      GetRandomValue(POWERUP_SPAWN_TIMER_MIN, POWERUP_SPAWN_TIMER_MAX);
 
   shield = false;
   shieldTimer = 0;
@@ -120,8 +125,10 @@ void SpaceShooter::HandleEnemyUpdate() {
 
   enemySpawnTimer -= GetFrameTime();
   if (enemySpawnTimer <= 0.0f) {
-    enemySpawnTimer = ENEMY_SPAWN_TIMER;
-    enemies.push_back(Enemy());
+    enemySpawnTimer =
+        GetRandomValue((float)ENEMY_SPAWN_TIMER_MIN, ENEMY_SPAWN_TIMER_MAX);
+    enemies.push_back(
+        Enemy(GetRandomValue(0, 1) == 1 ? am.flamingMeteor : am.meteor));
   }
 }
 
@@ -150,12 +157,12 @@ void SpaceShooter::HandleBulletUpdate() {
     Rectangle playerRec = player.GetRec();
     float bulletSpawnY = playerRec.y - playerRec.height / 2;
     if (tripleShot) {
-      bullets.push_back(Bullet(
-          {playerRec.x - playerRec.width / 2, bulletSpawnY}, DEG2RAD * 315));
-      bullets.push_back(Bullet(
-          {playerRec.x + playerRec.width / 2, bulletSpawnY}, DEG2RAD * 45));
+      bullets.push_back(
+          Bullet({playerRec.x - playerRec.width / 2, bulletSpawnY}, 315));
+      bullets.push_back(
+          Bullet({playerRec.x + playerRec.width / 2, bulletSpawnY}, 45));
     }
-    bullets.push_back(Bullet({playerRec.x, bulletSpawnY}, DEG2RAD * 0));
+    bullets.push_back(Bullet({playerRec.x, bulletSpawnY}, 0));
   }
 }
 
@@ -173,11 +180,11 @@ void SpaceShooter::HandlePowerupUpdate() {
       switch (powerups[i].GetType()) {
       case SHIELD:
         shield = true;
-        shieldTimer = POWERUP_ACTIVE_TIMER;
+        shieldTimer = (float)POWERUP_ACTIVE_TIMER;
         break;
       case TRIPLE_SHOT:
         tripleShot = true;
-        tripleShotTimer = POWERUP_ACTIVE_TIMER;
+        tripleShotTimer = (float)POWERUP_ACTIVE_TIMER;
         break;
       }
     }
@@ -186,7 +193,8 @@ void SpaceShooter::HandlePowerupUpdate() {
   float frameTime = GetFrameTime();
   powerupSpawnTimer -= frameTime;
   if (powerupSpawnTimer <= 0.0f) {
-    powerupSpawnTimer = POWERUP_SPAWN_TIMER;
+    powerupSpawnTimer =
+        GetRandomValue(POWERUP_SPAWN_TIMER_MIN, POWERUP_SPAWN_TIMER_MAX);
     PowerupType type;
     int selection = GetRandomValue(0, 1);
     switch (selection) {
@@ -267,14 +275,15 @@ void SpaceShooter::DrawPowerups() {
 }
 
 void SpaceShooter::DrawEntities() {
-  player.Draw();
+  player.Draw(shield ? am.shield : am.spaceship);
   for (size_t i = 0; i < enemies.size(); ++i) {
     enemies[i].Draw();
   }
   for (size_t i = 0; i < bullets.size(); ++i) {
-    bullets[i].Draw();
+    bullets[i].Draw(am.laser);
   }
   for (size_t i = 0; i < powerups.size(); ++i) {
-    powerups[i].Draw();
+    PowerupType type = powerups[i].GetType();
+    powerups[i].Draw(type == SHIELD ? am.shield : am.powerupIcon);
   }
 }

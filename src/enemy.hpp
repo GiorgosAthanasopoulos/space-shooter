@@ -4,7 +4,7 @@
 
 class Enemy {
 public:
-  Enemy();
+  Enemy(Texture2D tex);
   ~Enemy();
   void Update();
   void Draw();
@@ -13,4 +13,5 @@ public:
 
 private:
   Vector2 pos, size, speed;
+  Texture2D tex;
 };

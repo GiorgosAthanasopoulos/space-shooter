@@ -49,7 +49,7 @@
 #define WIN_MAX_H 2160
 #define DEBUG false
 
-// == SPACE SHOOTER ==
+// == GAME ==
 #define WIN_BG BLACK
 #define KEY_RESTART KEY_SPACE
 #define SCORE_TEXT_PADDING 5
@@ -63,3 +63,7 @@
 // == DEBUG ==
 #define DEBUG_COLL_LINE_COLOR RED
 #define DEBUG_COLL_LINE_THICK 1
+
+// == AUDIO ==
+#define SOUND_VOLUME 1.0f
+#define MUSIC_VOLUME 1.0f

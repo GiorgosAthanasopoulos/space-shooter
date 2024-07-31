@@ -1,4 +1,5 @@
 #include "asset_manager.hpp"
+#include "config.hpp"
 #include <raylib.h>
 
 AssetManager::AssetManager() {
@@ -10,7 +11,17 @@ AssetManager::AssetManager() {
   spaceshipShield = LoadTexture("assets/ship_2.png");
   powerupIcon = LoadTexture("assets/powerup_icon.png");
   flamingMeteor = LoadTexture("assets/flaming_meteor.png");
-  explosion = LoadTexture("assets/explosion.png");
+  explosionTex = LoadTexture("assets/explosion.png");
+
+  explosion = LoadSound("assets/explosion.mp3");
+  lost = LoadSound("assets/lost.mp3");
+  powerup = LoadSound("assets/powerup.mp3");
+  bgm = LoadMusicStream("assets/bgm.mp3");
+
+  SetSoundVolume(explosion, SOUND_VOLUME);
+  SetSoundVolume(powerup, SOUND_VOLUME);
+  SetSoundVolume(lost, SOUND_VOLUME);
+  SetMusicVolume(bgm, MUSIC_VOLUME);
 }
 
 AssetManager::~AssetManager() {
@@ -22,5 +33,10 @@ AssetManager::~AssetManager() {
   UnloadTexture(spaceshipShield);
   UnloadTexture(powerupIcon);
   UnloadTexture(flamingMeteor);
-  UnloadTexture(explosion);
+  UnloadTexture(explosionTex);
+
+  UnloadSound(explosion);
+  UnloadSound(powerup);
+  UnloadSound(lost);
+  UnloadMusicStream(bgm);
 }

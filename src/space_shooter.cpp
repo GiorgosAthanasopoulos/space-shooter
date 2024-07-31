@@ -7,14 +7,13 @@
 #include "util.hpp"
 
 // FIX: bullet hitbox when angled
-// TODO: audio
-// TODO: explosion
 
 SpaceShooter::SpaceShooter() {
   winSize = GetWindowSize();
   bestScore = 0;
   score = 0;
   Restart();
+  PlayMusicStream(am.bgm);
 }
 
 SpaceShooter::~SpaceShooter() {}
@@ -32,6 +31,7 @@ void SpaceShooter::Update() {
   HandleBulletUpdate();
   HandlePowerupUpdate();
   HandleExplosionUpdate();
+  UpdateMusicStream(am.bgm);
 }
 
 void SpaceShooter::Draw() {
@@ -89,6 +89,8 @@ void SpaceShooter::Restart() {
   shieldTimer = 0;
   tripleShot = false;
   tripleShotTimer = 0;
+
+  PlayMusicStream(am.bgm);
 }
 
 void SpaceShooter::HandleResize() {
@@ -121,6 +123,8 @@ void SpaceShooter::HandleEnemyUpdate() {
         enemies.erase(enemies.begin() + i);
       } else {
         lost = true;
+        StopMusicStream(am.bgm);
+        PlaySound(am.lost);
       }
     }
   }
@@ -151,6 +155,7 @@ void SpaceShooter::HandleBulletUpdate() {
         score += SCORE_INTERVAL_KILL;
         Rectangle collRec = GetCollisionRec(bulletRec, enemyRec);
         explosions.push_back(Explosion({collRec.x, collRec.y}));
+        PlaySound(am.explosion);
       }
     }
   }
@@ -180,6 +185,7 @@ void SpaceShooter::HandlePowerupUpdate() {
     }
 
     if (CheckCollisionRecs(player.GetRec(), powerupRec)) {
+      PlaySound(am.powerup);
       powerups.erase(powerups.begin() + i);
       switch (powerups[i].GetType()) {
       case SHIELD:
@@ -291,7 +297,7 @@ void SpaceShooter::DrawEntities() {
     powerups[i].Draw(type == SHIELD ? am.shield : am.powerupIcon);
   }
   for (size_t i = 0; i < explosions.size(); ++i) {
-    explosions[i].Draw(am.explosion);
+    explosions[i].Draw(am.explosionTex);
   }
 }
 

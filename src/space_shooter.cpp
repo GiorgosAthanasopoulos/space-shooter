@@ -272,6 +272,9 @@ void SpaceShooter::DrawPowerups() {
   const char *shieldText = "Shield Active";
   float shieldTextSizeY = MeasureText(shieldText, tripleShotTextSize.y);
 
+  if (!DEBUG) {
+    return;
+  }
   if (shield) {
     DrawText(shieldText, SCORE_TEXT_PADDING,
              winSize.y - shieldTextSizeY - SCORE_TEXT_PADDING,

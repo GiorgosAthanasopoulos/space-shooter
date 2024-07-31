@@ -13,6 +13,8 @@
 #define SCORE_INTERVAL_KILL 20
 #define BULLET_SPAWN_TIMER 0.5f
 #define KEY_SHOOT KEY_SPACE
+#define FONT_SIZE 100
+#define LARGE_FONT_SIZE 1000
 
 SpaceShooter::SpaceShooter() {
   winSize = GetWindowSize();
@@ -20,6 +22,7 @@ SpaceShooter::SpaceShooter() {
   lost = false;
   score = 0;
   bulletSpawnTimer = 0;
+  bestScore = 0;
 }
 
 SpaceShooter::~SpaceShooter() {}
@@ -63,7 +66,7 @@ void SpaceShooter::Update() {
     }
 
     for (size_t j = 0; j < enemies.size(); ++j) {
-      Rectangle enemyRec = enemies[i].GetRec();
+      Rectangle enemyRec = enemies[j].GetRec();
       if (CheckCollisionRecs(bulletRec, enemyRec)) {
         bullets.erase(bullets.begin() + i);
         enemies.erase(enemies.begin() + j);
@@ -91,19 +94,30 @@ void SpaceShooter::Draw() {
   BeginDrawing();
   ClearBackground(WIN_BG);
 
-  std::ostringstream scoreTextStream;
-  scoreTextStream << "Score: " << score;
-  std::string scoreTextString = scoreTextStream.str();
-  const char *scoreText = scoreTextString.data();
-  Vector2 scoreTextSize =
-      AssertTextFitsInViewport(scoreText, 100, GetWindowSize() / 6);
-  DrawText(scoreText, winSize.x - scoreTextSize.x - SCORE_TEXT_PADDING,
-           SCORE_TEXT_PADDING, scoreTextSize.y, SCORE_TEXT_COLOR);
+  std::ostringstream scrStrm;
+  scrStrm << "Score: " << score;
+  std::string scrStr = scrStrm.str();
+  const char *scrTxt = scrStr.data();
+
+  std::ostringstream bstScrStrm;
+  bstScrStrm << "Best Score: " << bestScore;
+  std::string bstScrStr = bstScrStrm.str();
+  const char *bstScrTxt = bstScrStr.data();
+  Vector2 bstScrTxtSz =
+      AssertTextFitsInViewport(bstScrTxt, FONT_SIZE, winSize / 6);
+
+  float scrTxtSzX = MeasureText(scrTxt, bstScrTxtSz.y);
+
+  DrawText(scrTxt, winSize.x - scrTxtSzX - SCORE_TEXT_PADDING,
+           SCORE_TEXT_PADDING, bstScrTxtSz.y, SCORE_TEXT_COLOR);
+  DrawText(bstScrTxt, winSize.x - bstScrTxtSz.x - SCORE_TEXT_PADDING,
+           SCORE_TEXT_PADDING * 2 + bstScrTxtSz.y, bstScrTxtSz.y,
+           SCORE_TEXT_COLOR);
 
   if (lost) {
     const char *lostText = "YOU LOST";
-    Vector2 lostTextSize =
-        AssertTextFitsInViewport(lostText, 1000, GetWindowSize() / 2);
+    Vector2 lostTextSize = AssertTextFitsInViewport(lostText, LARGE_FONT_SIZE,
+                                                    GetWindowSize() / 2);
     DrawText(lostText, GetWindowWidth() / 2 - lostTextSize.x / 2,
              GetWindowHeight() / 2 - lostTextSize.y / 2, lostTextSize.y, RED);
 
@@ -137,6 +151,9 @@ void SpaceShooter::Restart() {
   enemySpawnTimer = ENEMY_SPAWN_TIMER;
   lost = false;
   player.Reset();
+  if (score > bestScore) {
+    bestScore = score;
+  }
   score = 0;
   bullets.clear();
 }

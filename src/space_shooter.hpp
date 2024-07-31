@@ -24,6 +24,7 @@ private:
   int score;
   std::vector<Bullet> bullets;
   float bulletSpawnTimer;
+  int bestScore;
 
   void Resize(Vector2 old, Vector2 nnew);
   void Restart();
